@@ -1,0 +1,13 @@
+{
+  "presets": [
+    "es2015",
+    "stage-0",
+    "latest"
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    "typecheck",
+    "syntax-flow",
+    "transform-flow-strip-types"
+  ]
+}

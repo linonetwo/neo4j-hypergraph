@@ -1,0 +1,62 @@
+{
+  "name": "neo4j-hypergraph",
+  "version": "1.0.0",
+  "description": "HyperGraph Driver for Neo4J, capable for building semantic web",
+  "main": "build/neo4j-hypergraph.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha -s 250 -c __test__/* --compilers js:babel-core/register --require babel-polyfill --watch",
+    "build": "babel src -d build",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linonetwo/neo4j-hypergraph.git"
+  },
+  "keywords": [
+    "neo4j",
+    "hypergraph",
+    "graph",
+    "semantic",
+    "hyperedge",
+    "semanticweb"
+  ],
+  "author": "linonetwo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/linonetwo/neo4j-hypergraph/issues"
+  },
+  "homepage": "https://github.com/linonetwo/neo4j-hypergraph#readme",
+    "dependencies": {
+    "bluebird": "^3.4.6",
+    "common-errors": "^1.0.0",
+    "eslint": "^3.6.1",
+    "node-uuid": "^1.4.7"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-eslint": "^6.1.2",
+    "babel-plugin-syntax-flow": "^6.13.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-flow-strip-types": "^6.14.0",
+    "babel-plugin-typecheck": "^3.9.0",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-latest": "^6.14.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.1.0",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-flowtype": "^2.18.1",
+    "eslint-plugin-import": "^1.15.0",
+    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.2.2",
+    "is-uuid": "^1.0.2",
+    "mocha": "^3.0.2"
+  }
+}
