@@ -1,28 +1,28 @@
-import { AlreadyInUseError, NotSupportedError, helpers } from 'common-errors';
+import { ArgumentError, AlreadyInUseError, NotSupportedError, helpers } from 'common-errors';
 
 const { generateClass } = helpers;
 
-const MissingParameterError = generateClass('MissingParameterError', {
-  extends: FileNotFoundError,
-  args: ['missingFileName'],
+const MissingUUIDError = generateClass('MissingUUIDError', {
+  extends: ArgumentError,
+  args: ['function'],
   generateMessage: () =>
-    `missing-important-file  
-    missing ${this.missingFileName}  
-    transaction-fs need things like tempfolder and basepath to work, 
-    if they prooved to be not exist, fs-transaction won\'t work properly, please check whether it really exist from program side of view  `
+    `missing-uuid  
+    missing uuid in ${this.function}  
+    neo4j-hypergraph need uuid to locate data,  
+    please check whether this UUID is really provided from program side of view  `
 });
 
-const AlreadyExistsError = generateClass('AlreadyExistsError', {
-  extends: AlreadyInUseError,
-  args: ['existedFileName'],
+const Neo4jOperationFailedError = generateClass('Neo4jOperationFailedError', {
+  extends: ArgumentError,
+  args: ['function', 'parameters'],
   generateMessage: () =>
-  `already-exists  
-  ${this.existedFileName} exists  
-  this may means you use an uuid or something for filename that has already been used  `
+    `neo4j-failure  
+    neo4j operation in ${this.function} failed with parameters ${this.parameters}  
+    please check operation usage in the docs, or submit issue  `
 });
 
 export {
-  MissingImportantFileError,
-  AlreadyExistsError,
+  MissingUUIDError,
+  Neo4jOperationFailedError,
   NotSupportedError,
 } ;
