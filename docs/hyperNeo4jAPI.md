@@ -2,8 +2,8 @@
 
 ## [介绍](https://github.com/linonetwo/neo4j-hypergraph/blob/master/docs/hyperNeo4jAPI.md#这是啥)
 
-- ### [场论有向超图简介](https://github.com/linonetwo/neo4j-hypergraph/blob/master/docs/hyperNeo4jAPI.md#超边类似于标签但这个标签可以带有属性)
-- ### [API 介绍](https://github.com/linonetwo/neo4j-hypergraph/blob/master/docs/hyperNeo4jAPI.md#这是一个抽象的超图操作-api)
+- [场论有向超图简介](https://github.com/linonetwo/neo4j-hypergraph/blob/master/docs/hyperNeo4jAPI.md#超边类似于标签但这个标签可以带有属性)
+- [API 介绍](https://github.com/linonetwo/neo4j-hypergraph/blob/master/docs/hyperNeo4jAPI.md#这是一个抽象的超图操作-api)
 
 
 ## 这是啥
@@ -18,7 +18,7 @@
 涂抹出来的色块是什么？它就是超边：一维的边就是一条线，能连接两个节点，而二维的边就是涂抹出来的一个色块，能包住好几个节点。所以我们可以看到，超边和 Label 一样，都是对节点进行分类的方法。  
 超边可以很方便地描述出这种情况，首先，人类很容易看出上图中节点同时属于黄色的超边，其次，在 Neo4j 中我们也可以用原生的有向图来描述出这样的超边。  
 ![drawBackOfUsingLabel2](https://github.com/linonetwo/neo4j-hypergraph/blob/master/docs/pics/drawBackOfUsingLabel2.png?raw=true)  
-如果节点像上图这样，同时属于多个类别呢？超边可以很方便地描述出来，但是如果想用 Label 描述出这样的关系就麻烦啦，不仅仅是所需的标签数量会爆炸，而且还需要额外的信息来描述标签之间的层次关系。  
+如果节点像上图这样，同时属于多个类别呢？超边可以很方便地描述出来，但是如果想用 Label 描述出这样的关系就麻烦啦，不仅仅是所需的标签数量会爆炸，而且还需要额外的信息来描述标签之间的层次关系。而且带有属性也就意味着可以使用 JSON-LD 等格式来增强节点的互联性。
 ![hypergraphIntro1](https://github.com/linonetwo/neo4j-hypergraph/blob/master/docs/pics/hypergraphIntro1.png?raw=true)  
 在超图里，每个节点都可以属于多个超边，例如上图中 Node1 就属于三个超边，其中绿色的超边不是直接包含 Node1，而是通过超边之间的层次关系而间接拥有 Node1。  
 超边之间可以有多种层次关系，取决于业务需要，更多的关系类型会提高推理难度，但有更高的精确性，需要有所取舍。  
