@@ -62,7 +62,7 @@ function hyper({ host, boltPort, userName, passWord }) {
       return new HyperTransaction();
     },
     // 接受一个传入的 session，因为 transaction 的用法和 session 的用法一样，所以后续能支持事务
-    createHyperEdge({ tags, props, children, session, hyperEdgeUUID = uuid() }) {
+    createHyperEdge({ tags = [], props = [], children = [], session, hyperEdgeUUID = uuid() }) {
       let nonTransactional = false;
       // 如果函数的调用者没提供 session，那肯定就是非事务性调用
       if (!session) {
@@ -73,8 +73,9 @@ function hyper({ host, boltPort, userName, passWord }) {
       const tagsString = tagArrayToString(tags);
       const propsString = propsObjectToString({ ...props, uuid: hyperEdgeUUID });
 
+      const createHyperEdgeQuery = `CREATE (n :HYPEREDGE ${tagsString} ${propsString}) RETURN n.uuid`;
       return Promise.try(() =>
-        session.run(`CREATE (n :HYPEREDGE ${tagsString} ${propsString}) RETURN n.uuid`)
+        session.run(createHyperEdgeQuery)
       )
       .then((result) => {
         if (result.records.length > 1) {
@@ -83,7 +84,7 @@ function hyper({ host, boltPort, userName, passWord }) {
         return result.records[0].get('n.uuid');
       })
       .then(addedHyperEdgeUUID =>
-        hyperFunctions.addNodeToHyperEdge({ children, hyperEdgeUUID, session })
+        hyperFunctions.addNodeToHyperEdge({ nodeUUIDs: children, hyperEdgeUUID, session })
       )
       .then(() => {
         if (nonTransactional) {
@@ -91,7 +92,7 @@ function hyper({ host, boltPort, userName, passWord }) {
         }
       });
     },
-    createNode({ tags, props, nodeUUID = uuid(), session, hyperEdgeUUIDs }) {
+    createNode({ tags = [], props = [], nodeUUID = uuid(), session, hyperEdgeUUIDs = [] }) {
       let nonTransactional = false;
       // 如果函数的调用者没提供 session，那肯定就是非事务性调用
       if (!session) {
@@ -102,8 +103,9 @@ function hyper({ host, boltPort, userName, passWord }) {
       const tagsString = tagArrayToString(tags);
       const propsString = propsObjectToString({ ...props, uuid: nodeUUID });
 
+      const createNodeQuery = `CREATE (n :NODE ${tagsString} ${propsString}) RETURN n.uuid`;
       return Promise.try(() =>
-        session.run(`CREATE (n :NODE ${tagsString} ${propsString}) RETURN n.uuid`)
+        session.run(createNodeQuery)
       )
       .then((result) => {
         if (result.records.length > 1) {
@@ -113,7 +115,7 @@ function hyper({ host, boltPort, userName, passWord }) {
       })
       .then(addedNodeUUID =>
         Promise.mapSeries(hyperEdgeUUIDs, (item) =>
-          hyperFunctions.addNodeToHyperEdge({ children: [addedNodeUUID], item, session })
+          hyperFunctions.addNodeToHyperEdge({ nodeUUIDs: [addedNodeUUID], hyperEdgeUUID: item, session })
         )
       )
       .then(() => {
@@ -122,13 +124,14 @@ function hyper({ host, boltPort, userName, passWord }) {
         }
       });
     },
-    addNodeToHyperEdge({ nodeUUIDs, hyperEdgeUUID, session }) {
+    addNodeToHyperEdge({ nodeUUIDs = [], hyperEdgeUUID, session }) {
       let nonTransactional = false;
       // 如果函数的调用者没提供 session，那肯定就是非事务性调用
       if (!session) {
         session = driver.session(); /* eslint no-param-reassign: 0*/
         nonTransactional = true;
       }
+      console.log(nodeUUIDs, hyperEdgeUUID);
       return Promise.mapSeries(nodeUUIDs, (item) =>
         session.run('MATCH (hyperEdge:HYPEREDGE {uuid: {hyperEdgeUUID}}), (node {uuid: {uuid}}) CREATE (hyperEdge)-[:HYPEREDGE]->(node)',
           { hyperEdgeUUID, uuid: item }
@@ -214,8 +217,8 @@ function hyper({ host, boltPort, userName, passWord }) {
   return hyperFunctions;
 }
 
-// const funcs = hyper({ host: '192.168.99.100', boltPort: 7687, userName: 'neo4j', passWord: 'j4oen' });
-// funcs.
+const funcs = hyper({ host: '192.168.99.100', boltPort: 32768, userName: 'neo4j', passWord: 'j4oen' });
+funcs.createHyperEdge({ tags: [], props: [], children: ['96565c63-b242-4ad2-9fee-dd525f4a4f2c'] });
 
 
 export default hyper;

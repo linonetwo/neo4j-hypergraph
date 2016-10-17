@@ -9,6 +9,7 @@
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha -s 250 -c __test__/* --compilers js:babel-core/register --require babel-polyfill --watch",
     "build": "babel src -d build",
+    "start": "babel-node ./src/neo4j-hypergraph.js",
     "prepublish": "npm run build"
   },
   "repository": {
